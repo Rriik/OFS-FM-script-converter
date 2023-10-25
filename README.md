@@ -28,7 +28,7 @@ However, attempting to play back a regular funscript while connected to a rotary
 ## Features
 - A simple yet accurate cycle-time-to-power-level converter that only requires the min. and max. RPM of your device (with the toy attached) to work effectively
 - Create and store custom device profiles for faster conversion
-- A handy calculator utility helps you find the equivalent power level and RPM of your device profile for a given cycle duration
+- A handy calculator utility helps you find the equivalent power level and RPM of your device profile for a given cycle duration (meaning the duration in the script between two peaks or two troughs)
 - Conversion logic based fully on [peaks and troughs](#about-peaks-and-troughs) means not having to worry about how detailed the funscript patterns are
 - Ample conversion options help you tailor the power level graph to better fit the content you are working on
 - Quickly test your converted script by following the [funscript-to-machine setup guide below](#setting-up-the-funscript-to-machine-connection)!

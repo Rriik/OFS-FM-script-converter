@@ -152,4 +152,26 @@ function API.round(num, decimals)
     return num / decimals
 end
 
+-- selects all peaks or all troughs in the script
+function API.select_all_peaks_or_troughs(which)
+    local script = ofs.Script(ofs.ActiveIdx())
+    if script == nil then
+        return
+    end
+    local peaks, troughs = API.get_peaks_troughs(script.actions)
+    for _, action in ipairs(script.actions) do -- deselect all actions first
+        action.selected = false
+    end
+    if which == "peaks" then -- select peaks
+        for _, action in ipairs(peaks) do
+            action.selected = true
+        end
+    elseif which == "troughs" then -- select troughs
+        for _, action in ipairs(troughs) do
+            action.selected = true
+        end
+    end
+    script:commit()
+end
+
 return API

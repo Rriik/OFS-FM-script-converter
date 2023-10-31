@@ -44,6 +44,12 @@ function gui()
 
     if ofs.CollapsingHeader("Device profile calibration utilities") then
         if ofs.CollapsingHeader("  Unit converter") then
+            ofs.Text("Number of cycles")
+            Utils.UnitConvNrCycles, UnitConvNrCyclesChanged =
+                ofs.Input("##UnitConvNrCycles", Utils.UnitConvNrCycles, 1)
+            ofs.Text("Time period (sec)")
+            Utils.UnitConvTimePeriod, UnitConvTimePeriodChanged =
+                ofs.Input("##UnitConvTimePeriod", Utils.UnitConvTimePeriod, 1)
             ofs.Text("Cycle duration (msec)")
             Utils.UnitConvCycleDuration, UnitConvCycleDurationChanged =
                 ofs.Input("##UnitConvCycleDuration", Utils.UnitConvCycleDuration, 1)
@@ -53,6 +59,12 @@ function gui()
             ofs.Text("RPM")
             Utils.UnitConvRPM, UnitConvRPMChanged =
                 ofs.Input("##UnitConvRPM", Utils.UnitConvRPM, 1)
+            if UnitConvNrCyclesChanged then
+                Utils.update_unit_converter("cycles")
+            end
+            if UnitConvTimePeriodChanged then
+                Utils.update_unit_converter("time")
+            end
             if UnitConvCycleDurationChanged then
                 Utils.update_unit_converter("duration")
             end

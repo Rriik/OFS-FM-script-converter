@@ -4,7 +4,8 @@ local Utils = require("utils")
 
 function init()
     -- this runs once when enabling the extension
-    Profile.init_settings()
+    Profile.load_config()
+    Profile.refresh_fields()
     print("initialized")
 end
 
@@ -23,7 +24,8 @@ function gui()
     Profile.SelectedDevice, SelectedDeviceChanged =
         ofs.Combo("##SelectedDevice", Profile.SelectedDevice, Profile.DeviceListNames)
     if SelectedDeviceChanged then
-        Profile.update_settings()
+        Profile.refresh_fields()
+        Profile.save_config()
         Utils.update_unit_converter("duration")
     end
 
@@ -40,6 +42,35 @@ function gui()
         if DeviceMaxRPMChanged or DeviceMinRPMChanged then
             Utils.update_unit_converter("duration")
         end
+        ofs.Separator()
+
+        Profile.toggle_buttons()
+        ofs.BeginDisabled(Profile.DisableCreate)
+        if ofs.Button("Create") then
+            Profile.create_new()
+            Profile.refresh_fields()
+            Profile.save_config()
+            Utils.update_unit_converter("duration")
+        end
+        ofs.EndDisabled(Profile.DisableCreate)
+        ofs.SameLine()
+        ofs.BeginDisabled(Profile.DisableModify)
+        if ofs.Button("Modify") then
+            Profile.modify_current()
+            Profile.refresh_fields()
+            Profile.save_config()
+            Utils.update_unit_converter("duration")
+        end
+        ofs.EndDisabled(Profile.DisableModify)
+        ofs.SameLine()
+        ofs.BeginDisabled(Profile.DisableRemove)
+        if ofs.Button("Remove") then
+            Profile.remove_current()
+            Profile.refresh_fields()
+            Profile.save_config()
+            Utils.update_unit_converter("duration")
+        end
+        ofs.EndDisabled(Profile.DisableRemove)
     end
 
     if ofs.CollapsingHeader("Device profile calibration utilities") then

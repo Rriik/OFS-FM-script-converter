@@ -6,6 +6,9 @@ function init()
     -- this runs once when enabling the extension
     Profile.load_config()
     Profile.refresh_fields()
+    for i = 1, 2 do -- add 2 empty measurements as default
+        Utils.add_measurement()
+    end
     print("initialized")
 end
 
@@ -52,7 +55,7 @@ function gui()
             Profile.save_config()
             Utils.update_unit_converter("duration")
         end
-        ofs.EndDisabled(Profile.DisableCreate)
+        ofs.EndDisabled()
         ofs.SameLine()
         ofs.BeginDisabled(Profile.DisableModify)
         if ofs.Button("Modify") then
@@ -61,7 +64,7 @@ function gui()
             Profile.save_config()
             Utils.update_unit_converter("duration")
         end
-        ofs.EndDisabled(Profile.DisableModify)
+        ofs.EndDisabled()
         ofs.SameLine()
         ofs.BeginDisabled(Profile.DisableRemove)
         if ofs.Button("Remove") then
@@ -70,7 +73,7 @@ function gui()
             Profile.save_config()
             Utils.update_unit_converter("duration")
         end
-        ofs.EndDisabled(Profile.DisableRemove)
+        ofs.EndDisabled()
     end
 
     if ofs.CollapsingHeader("Device profile calibration utilities") then
@@ -105,6 +108,33 @@ function gui()
             if UnitConvRPMChanged then
                 Utils.update_unit_converter("rpm")
             end
+        end
+
+        if ofs.CollapsingHeader("  Min./Max. RPM estimator") then
+            for i = 1, #Utils.EstimatorMeasurements do
+                ofs.Text("Measurement " .. tostring(i))
+                ofs.SameLine()
+                ofs.BeginDisabled(Utils.DisableMeasurementXButtons)
+                if ofs.Button("X##Estimator#Measurement" .. tostring(i)) then
+                    Utils.remove_measurement(i)
+                    ofs.EndDisabled()
+                    break
+                end
+                ofs.EndDisabled()
+                Utils.EstimatorMeasurements[i].powerLevel, _ =
+                    ofs.SliderInt("Power level##EstimatorPowerLevel" .. tostring(i),
+                    Utils.EstimatorMeasurements[i].powerLevel, 1, 100)
+                Utils.EstimatorMeasurements[i].rpm, _ =
+                    ofs.Input("RPM##EstimatorRPM" .. tostring(i), Utils.EstimatorMeasurements[i].rpm, 1)
+            end
+            if ofs.Button("Add measurement") then
+                Utils.add_measurement()
+            end
+            ofs.Separator()
+            Utils.estimate_profile_config()
+            ofs.Text("Estimated profile configuration:")
+            ofs.Text("- Max. RPM: " .. string.format("%.2f", Utils.EstimatedMaxRPM))
+            ofs.Text("- Min. RPM: " .. string.format("%.2f", Utils.EstimatedMinRPM))
         end
     end
 

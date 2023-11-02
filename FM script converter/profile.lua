@@ -91,7 +91,14 @@ end
 function Profile.toggle_buttons()
     -- toggle Create profile button if the name field value differs from the saved config
     if Profile.DeviceName ~=  Profile.DeviceList[Profile.SelectedDevice].name then
-        Profile.DisableCreate = false
+        local nameExistsInList = false
+        for _, device in ipairs(Profile.DeviceList) do
+            if Profile.DeviceName == device.name then
+                nameExistsInList = true
+                break
+            end
+        end
+        Profile.DisableCreate = nameExistsInList and true or false
     else
         Profile.DisableCreate = true
     end

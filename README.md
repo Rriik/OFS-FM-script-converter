@@ -28,24 +28,28 @@ However, attempting to play back a regular funscript while connected to a rotary
 ## Features
 - A simple yet accurate cycle-time-to-power-level converter that only requires the min. and max. RPM of your device (with the toy attached) to work effectively
 - Create and store custom device profiles for faster conversion
-- A handy calculator utility helps you find the equivalent power level and RPM of your device profile for a given cycle duration (meaning the duration in the script between two peaks or two troughs)
+- A built-in unit converter utility helps you quickly translate between several types of values (cycle duration, power level, RPM, etc.)
+- A built-in device profile estimator automatically computes the min. and max. RPM values for your device profile from just a few measurements
 - Conversion logic based fully on [peaks and troughs](#about-peaks-and-troughs) means not having to worry about how detailed the funscript patterns are
 - Ample conversion options help you tailor the power level graph to better fit the content you are working on
 - Quickly test your converted script by following the [funscript-to-machine setup guide below](#setting-up-the-funscript-to-machine-connection)!
 - Developed for OFS v3
 
 ## GUI showcase
-![image](https://github.com/Rriik/OFS-FM-script-converter/assets/132300166/677f2acc-462c-4c80-a900-29a3af9618a9)
+| Example 1 | Example 2 |
+|:---------:|:---------:|
+|![](https://github.com/Rriik/OFS-FM-script-converter/assets/132300166/4a894804-547a-4b81-b97c-79c92718d850)| ![](https://github.com/Rriik/OFS-FM-script-converter/assets/132300166/20787fd8-34b1-4259-8178-26bfe06f6e25) |
 
 ## Installation
+
 1. Download and extract the latest version of the extension from [Releases](https://github.com/Rriik/OFS-FM-script-converter/releases)
 2. Copy the `FM script converter` directory and add it to the OFS extensions directory (`%appdata%/OFS3_data/extensions/`)
 3. Start OpenFunscripter
 4. In the `Extensions` tab, hover over the `FM script converter` list item and tick `Enabled` and `Show window`
-5. Optionally, you can pin the extension window to the OFS GUI. I prefer dedicating the left side of the GUI to this extension.
+5. Optionally, you can pin the extension window to the OFS GUI. I prefer dedicating the left side of the GUI to this extension
 
 ## Usage
-After completing the installation steps, you should be able to load up any OFS project and use the converter tool. Below are some instructions to get you started. Be sure to also check out the [guides](#guides) section to better understand how to use the tool.
+After completing the installation steps, you should be able to load up any OFS project and use the converter tool. Below are some instructions to get you started. Be sure to also check out the [guides](#guides) to better understand how to use the tool.
 
 ### 1. Make a copy of the funscript you want to convert
 
@@ -53,11 +57,21 @@ This is important, as it will allow you to have a backup of the original script.
 
 ### 2. Create your device profile
 
-The FM script converter extension comes already pre-configured with a profile for the popular [Hismith Pro 1 fuck machine](https://www.hismith.com/en/hismith-brands/356-hismith-premium-sex-machine-app-control-with-wireless-remote.html) using a 1kg toy. I have created this profile after thoroughly benchmarking it using my Hismith and testing it on many scripts I have been making over the past half a year. I have also created [the guide below](#measuring-the-rpm-of-devices) to help you with the process of measuring the RPM values.
+The extension comes with pre-configured profiles, such as for the popular [Hismith Pro 1 fuck machine](https://www.hismith.com/en/hismith-brands/356-hismith-premium-sex-machine-app-control-with-wireless-remote.html) using a 1kg toy. These profiles may be either personally tested or community-outsourced. You can also create new profiles, modify existing ones or remove them from the list. Your modifications will persist between OFS sessions. **Note:** all profiles created must have different names.
 
-In addition to this, the extension provides a generic profile that can be tweaked to your liking. To store a custom profile, open the `main.lua` file in any text or code editor and add another entry in the `DeviceList` variable at the top of the file. A commented custom profile example is also available for convenience.
+The extension offers built-in ways to determine the minimum and maximum RPM of a device. These are located under the "Device profile calibration utilities" menu (see the [GUI showcase](#gui-showcase)). Using the steps below, you should be able to easily determine the right minimum and maximum RPM values to enter for your device profile:
 
-Device profiles are actually just linear growth functions described by the min. and max. RPM values you enter. You can also test this function with the built-in calculator to see the equivalent RPM for a certain power level or vice versa. This is because fuck machine controllers are typically built with a linear RPM step-increase in mind. Sometimes the linearity may taper off at the highest speed settings, but small RPM differences at high speeds are not as perceivable as they are at lower speeds.
+1. Attach the toy you wish to use to the machine
+2. Using [Intiface Central](https://intiface.com/central/), [MultiFunPlayer](https://github.com/Yoooi0/MultiFunPlayer) or other software that implements the [buttplug.io protocol](https://buttplug.io/), set the device to run at a certain power level between [1-100]
+3. Using a stopwatch, start measuring a large (e.g. 30-50) number of machine cycles
+4. In the extension GUI, open the "Unit converter" sub-menu and write down the number of cycles and time period you just measured
+5. Copy the RPM value from the converter
+6. In the extension GUI, open the "Min./Max. RPM estimator" sub-menu and write down the power level and RPM value into one of the measurement fields (use the "Add measurement" button to create more fields if needed)
+7. Repeat steps 2-6 several times (at minimum 2, recommended 5 or more times) using a wide range of power levels (the more varied, the better)
+8. Below the list of measurements, you will find the estimated minimum and maximum RPM values. Set these values as your device profile configuration
+9. (Optional) Check the accuracy of the model by setting different power levels from those you measured in the unit converter utility, and testing the accuracy of the predicted cycle duration and RPM values
+
+You can read more about [measuring the RPM of devices](#measuring-the-rpm-of-devices) in the guides below.
 
 ### 3. Adjust the conversion options
 
@@ -77,20 +91,19 @@ You can choose between converting the whole funscript or only the selected actio
 
 ### 5. Test the result
 
-Finally, you can link your fuck machine and the OFS editor through middleware that implements the [buttplug.io protocol](https://buttplug.io/). I have also written [the guide below](#setting-up-the-funscript-to-machine-connection) to describe my own setup, if you want to learn more. If everything is configured correctly, you should be able to use the OFS video controls to synchronize the funscript and video with your device (make sure you have the converted funscript track selected in the editor).
+Finally, you can link your fuck machine and the OFS editor through middleware that implements the [buttplug.io protocol](https://buttplug.io/). I have also written [a guide to describe my own setup](#setting-up-the-funscript-to-machine-connection), if you want to learn more. If everything is configured correctly, you should be able to use the OFS video controls to synchronize the funscript and video with your device (make sure you have the converted funscript track selected in the editor).
 
 ## Guides
 
 ### Measuring the RPM of devices
-The minimum and maximum RPM of a device should be measured with the toy attached to the device. Minimum RPM should be easy to measure by setting the device to run at 1% power from Intiface Central or other software that implements the [buttplug.io protocol](https://buttplug.io/).
 
-For higher speed devices (200+ RPM), the cycle times get very small, and it can be challenging to measure 100% power RPM correctly. The peak RPM will also vary based on load mass and shape. Lighter toys have lower inertia (e.g. 500g vs. 1kg) and toys with a lower center of mass have less sway (e.g. short, tapered vs. long, top-heavy).
+Device profiles are actually just linear growth functions described by the minimum (1% power) and maximum (100% power) RPM values you configure. This is because rotary fuck machine controllers are typically built with a linear RPM step-increase in mind. Sometimes the linearity may taper off at the highest speed settings, but small RPM differences at high speeds are not as perceivable as they are at lower speeds.
 
-Perceived RPM also heavily depends on the device's motor and the friction between the toy and the human body. Devices with less powerful motors may struggle to deliver the torque needed for consistent lower speeds and may underperform at higher speeds when facing friction resistance. The resulting peak speeds can be within ± 5-10% of the manufacturer's stated max RPM.
+For higher speed devices (200+ RPM), the cycle times at high power levels get very small, and it can become challenging to measure RPM correctly. The peak RPM will also vary based on load mass and shape. Lighter toys have lower inertia (e.g. 500g vs. 1kg) and toys with a lower center of mass have less sway (e.g. short, tapered vs. long, top-heavy).
 
-Given all this, you have two options: either generally trust the device's stated max. RPM or test it yourself. In case of the former: take the stated max. RPM as the base value and try tweaking it in the extension's GUI to see how it synchronizes the machine and the scripts in real-world tests.
+Perceived RPM also heavily depends on the device's motor and the friction between the toy and the human body. Devices with less powerful motors may struggle to deliver the torque needed for consistent lower speeds and may underperform at higher speeds when facing friction resistance. The resulting peak speeds can be within ± 5-10% of the manufacturer's stated max RPM. You may need to slightly adjust the extension-estimated min./max. RPM values to account for this.
 
-In case of the latter: measure the cycle times at different speeds using different toys and write the results on a spreadsheet. Test up to the highest speeds you can reliably measure. Then calculate the RPMs for each speed setting, plot the values and use trendlines to extrapolate the ideal peak RPM for you. You can create as many device profiles as you want by adding entries in the DeviceList as shown in the listed example.
+You should only test up to the highest speeds you can reliably measure. For the most accurate results, you can make several profiles per device using different toy shapes and sizes/weights. Or you can average all of them to obtain a generic profile.
 
 ### Setting up the funscript-to-machine connection
 
@@ -101,13 +114,13 @@ You will need to install the following software (besides OFS):
 - [MultiFunPlayer](https://github.com/Yoooi0/MultiFunPlayer) - middleware, connects Intiface Central to OFS
 - [Spacedesk](https://www.spacedesk.net/) - optional screen mirroring for remote play (PC to tablet, for example)
 
-Below is a diagram showing how the different parts of the setup interact with one another.
+Below is a diagram showing how the different parts of the setup interact with one another:
 
 ![FuckMachineSystem](https://github.com/Rriik/OFS-FM-script-converter/assets/132300166/58e87f43-65d4-4b11-8a8e-baa04b17ba91)
 
 You should also read through both the Intiface Central and MultiFunPlayer project documentation to better understand their feature sets. But as an overall checklist, these are the broad steps to follow:
 1. Plug in and turn on your [buttplug.io-supported](https://iostindex.com/?filter0Type=Fucking%20Machine) rotary fuck machine
-2. Turn on the Bluetooth connection on your computer (for desktop PCs, ensure you have a motherboard with WiFi/BT connectivity and that your external antenna is connected, if the motherboard comes with such an add-on)
+2. Turn on the Bluetooth connection on your computer (for desktop PCs, ensure you have a motherboard with Wi-Fi/BT connectivity and that your external antenna is connected, if the motherboard comes with such an add-on)
 3. Open Intiface Central, open the Devices section, start the server (big play button), then click on "Start Scanning". It should automatically find and connect to your machine
 4. Open an OFS project that contains a converted script you wish to test (ensure you have the converted script selected in the editor)
 5. In the OFS GUI, turn on the websocket server (View > Websocket API > "Server active" checkbox, keep the port number as is unless you have a custom websocket chain setup)
@@ -127,10 +140,10 @@ While it may not be the focus of this extension, I think it may be worth pushing
 
 What I personally like doing is to create the "raw" penetration graph as the base funscript. I established certain rules for this too:
 
-- The position value of an action should denote the penetrating percentage related to the full length of the shaft. 0 means no penetration, 100 means full penetration (entire shaft), 33 means one third penetration and so on.
-- Actions should be placed (at least) at the beginning of every thrust and every pullback. Bonus points if you have the patience to make these frame-perfect and add intermediate positions to the thrust curve to match the content more closely.
-- If there are noticeable pause periods (usually >100ms) between thrusts, actions with the same position value should be placed at the start and end of the pause period.
-- Adding "standby" actions during non-penetrative parts of the content is up to the creator's preference, though I personally just like those periods to be fully unpowered (marked with 0-position actions).
+- The position value of an action should denote the penetrating percentage related to the full length of the shaft. 0 means no penetration, 100 means full penetration (entire shaft), 33 means one third penetration and so on
+- Actions should be placed (at least) at the beginning of every thrust and every pullback. Bonus points if you have the patience to make these frame-perfect and add intermediate positions to the thrust curve to match the content more closely
+- If there are noticeable pause periods (usually >100ms) between thrusts, actions with the same position value should be placed at the start and end of the pause period
+- Adding "standby" actions during non-penetrative parts of the content is up to the creator's preference, though I personally just like those periods to be fully unpowered (marked with 0-position actions)
 
 These rules are meant to be usable also by linear motion fuck machines, which I find to be superior to rotary fuck machines as they can accurately reproduce the patterns you are designing (much like the masturbation sleeves). And although those machines may be capable of vibration patterns, that should be separated into a different funscript variation. The base funscript for fuck machines should instead aim for maximum device compatibility.
 

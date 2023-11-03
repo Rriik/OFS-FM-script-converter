@@ -147,12 +147,24 @@ function gui()
             ofs.Checkbox("Record power level on peak series", Converter.RecordPowerOnPeakSeries)
         Converter.RecordPowerOnTroughSeries, _ =
             ofs.Checkbox("Record power level on trough series", Converter.RecordPowerOnTroughSeries)
+        ofs.Separator()
         Converter.UsePowerDropoff, _ =
             ofs.Checkbox("Drop power level on peak/trough series", Converter.UsePowerDropoff)
         if Converter.UsePowerDropoff then
             ofs.Text("|-> Dropoff time offset (msec)")
             Converter.PowerDropoffTimeOffset, _ =
                 ofs.InputInt("##PowerDropoffTimeOffset", Converter.PowerDropoffTimeOffset)
+        else
+            Converter.PowerDropoffTimeOffset = 100
+        end
+        Converter.OverrideStepSize, _ =
+            ofs.Checkbox("Override power level step size", Converter.OverrideStepSize)
+        if Converter.OverrideStepSize then
+            ofs.Text("|-> Step size")
+            Converter.PowerLevelStepSize, _ =
+                clamp(ofs.InputInt("##PowerLevelStepSize", Converter.PowerLevelStepSize), 1, 10)
+        else
+            Converter.PowerLevelStepSize = 1
         end
         Converter.Ignore0PosSeries, _ =
             ofs.Checkbox("Ignore 0-position action series", Converter.Ignore0PosSeries)

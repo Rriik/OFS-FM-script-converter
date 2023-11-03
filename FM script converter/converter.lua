@@ -11,6 +11,8 @@ Converter.RecordPowerOnPeakSeries = true    -- (GUI) whether to record the devic
 Converter.RecordPowerOnTroughSeries = true  -- (GUI) whether to record the device power level on trough series
 Converter.UsePowerDropoff = true            -- (GUI) whether to use the device power level dropoff feature
 Converter.PowerDropoffTimeOffset = 100      -- (GUI) time offset to enter/exit device power level dropoff (msec)
+Converter.OverrideStepSize = false          -- (GUI) whether to override the standard power level step size
+Converter.PowerLevelStepSize = 1            -- (GUI) the power level step size used by the converter
 Converter.Ignore0PosSeries = true           -- (GUI) whether to leave 0-position action series untouched
 
 ---------- Private variables ---------
@@ -177,7 +179,7 @@ function Converter.get_device_power_level(duration)
     local rpm = (1 / duration) * 60
     local powerLevel = 1 + 99 * (rpm - Profile.DeviceMinRPM) / (Profile.DeviceMaxRPM - Profile.DeviceMinRPM)
     powerLevel = clamp(powerLevel, 0, 100)
-    powerLevel = round(powerLevel, 0)
+    powerLevel = Converter.PowerLevelStepSize * round(powerLevel / Converter.PowerLevelStepSize, 0)
     return powerLevel
 end
 

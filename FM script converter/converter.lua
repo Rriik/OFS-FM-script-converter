@@ -3,7 +3,10 @@ local Converter = {}
 
 local Profile = require("profile")
 
----------- Public variables ----------
+---------- Public vari
+
+
+ables ----------
 
 Converter.RecordPowerOnSinglePeaks = true   -- (GUI) whether to record the device power level on single peaks
 Converter.RecordPowerOnSingleTroughs = true -- (GUI) whether to record the device power level on single troughs

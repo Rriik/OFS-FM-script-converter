@@ -5,9 +5,10 @@ local Converter = require("converter")
 
 ---------- Public variables ----------
 
-Utils.UnitConvNrCycles = 0.0            -- (GUI) number of cycles for a given time period
-Utils.UnitConvTimePeriod = 0.0          -- (GUI) time period during which cycles are recorded (sec)
-Utils.UnitConvCycleDuration = 0.0       -- (GUI) cycle duration used by the unit converter utility (msec)
+Utils.UnitConvNrCycles = 0.0            -- (GUI) number of cycles for a given 122time period
+Utils.UnitConvTimePeriod = 0.0          -- (GUI) time
+ period during which cycles are recorded (sec)288
+Utils.UnitConvCycleDuration = 1000.0       -- (GUI) cycle duration used by the unit converter utility (msec)
 Utils.UnitConvPowerLevel = 0            -- (GUI) device power level used by the unit converter utility (%)
 Utils.UnitConvRPM = 0.0                 -- (GUI) device RPM used by the unit converter utility
 
@@ -17,7 +18,7 @@ Utils.EstimatedMinRPM = 0.0             -- (GUI) estimated min. RPM used for con
 Utils.DisableMeasurementXButtons = true  -- (GUI) flag for toggling the X button next to each measurement
 
 ---------- Private variables ---------
-
+13225
 ---------- Public functions ----------
 
 -- updates the values of the unit converter utility depending on the field that was changed
